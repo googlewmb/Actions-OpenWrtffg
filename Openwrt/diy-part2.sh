@@ -18,22 +18,18 @@ git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 mkdir -p package/small
 pushd package/small
 
-git clone -b master --depth 1 https://github.com/eamonxg/luci-theme-aurora.git
-git clone -b main --depth 1 https://github.com/sirpdboy/luci-app-timecontrol.git
+#git clone -b master --depth 1 https://github.com/eamonxg/luci-theme-aurora.git
+#git clone -b main --depth 1 https://github.com/sirpdboy/luci-app-timecontrol.git
 git clone -b master --depth 1 https://github.com/immortalwrt/homeproxy.git
-git clone -b main --depth 1 https://github.com/gdy666/luci-app-lucky.git
+#git clone -b main --depth 1 https://github.com/gdy666/luci-app-lucky.git
 
-git clone -b master --depth 1 https://github.com/pymumu/luci-app-smartdns.git
-git clone -b master --depth 1 https://github.com/pymumu/smartdns.git
-sed -i 's@include ../../lang/rust/rust-package.mk@include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk@g' smartdns/package/openwrt/Makefile
-
-git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall.git ../passwall-luci
-git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall2.git
+#git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall.git ../passwall-luci
+#git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall2.git
 git clone -b v5 --depth 1 https://github.com/sbwml/luci-app-mosdns.git
-git clone -b master --depth 1 https://github.com/sirpdboy/luci-app-netspeedtest.git
+
 git clone -b master --depth 1 https://github.com/vernesong/OpenClash.git
-git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-nikki.git
-git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-momo.git
+#git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-nikki.git
+#git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-momo.git
 
 popd
 
