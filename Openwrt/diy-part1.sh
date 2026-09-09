@@ -1,33 +1,30 @@
 #!/bin/bash
 #
-# Add a feed source
-#1·在feeds.conf.default文件首行添加源码
-sed -i '1i src-git moruiris https://github.com/moruiris/openwrt-packages;openwrt' feeds.conf.default
-#2·在feeds.conf.default文件末尾添加源码
-#echo 'src-git moruiris https://github.com/moruiris/openwrt-packages;openwrt' >>feeds.conf.default
-#3·直接在./package添加源码
-#git clone -b openwrt https://github.com/moruiris/openwrt-packages ./package/moruiris
+# DIY1
+#
 
-# 自动为已选择的 LuCI 插件添加简体中文翻译
+# 添加 kenzok8 插件源
+sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
+
+# 删除官方冲突插件
+rm -rf feeds/luci/applications/{luci-app-passwall,luci-app-passwall2,luci-app-openclash,luci-app-homeproxy,luci-app-lucky,luci-app-smartdns,luci-app-mosdns}
+rm -rf feeds/packages/net/{alist,adguardhome,mosdns,xray*,v2ray*,sing*,smartdns}
+rm -rf feeds/packages/utils/v2dat
+rm -rf feeds/packages/lang/golang
+
+# 使用新版 golang
+git clone https://github.com/kenzok8/golang -b 1.26 feeds/packages/lang/golang
+
+# PassWall依赖
+git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+
+# 自动添加LuCI中文语言包
 for pkg in $(grep '^CONFIG_PACKAGE_luci-app-.*=y' .config | sed 's/^CONFIG_PACKAGE_//;s/=y//'); do
     trans="luci-i18n-${pkg#luci-app-}-zh-cn"
-
-    if grep -q "^CONFIG_PACKAGE_${trans}=y" .config 2>/dev/null; then
-        continue
-    fi
-
-    if grep -q "config package.*${trans}" feeds/luci/*/Makefile feeds/*/*/Makefile 2>/dev/null; then
-        echo "自动启用中文翻译: ${trans}"
-        echo "CONFIG_PACKAGE_${trans}=y" >> .config
-    fi
+    grep -q "^CONFIG_PACKAGE_${trans}=y" .config || \
+    grep -q "config package.*${trans}" feeds/luci/*/Makefile feeds/*/*/Makefile 2>/dev/null && \
+    echo "CONFIG_PACKAGE_${trans}=y" >> .config
 done
 
 make defconfig
-
-
-
-
-
-
-
-
