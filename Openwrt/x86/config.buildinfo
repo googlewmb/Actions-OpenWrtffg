@@ -13,7 +13,7 @@ CONFIG_TARGET_DEVICE_rockchip_armv8_DEVICE_hinlink_h68k=y    # 编译 Hinlink H6
 # ============================================================
 # CONFIG_TARGET_ROOTFS_EXT4FS is not set                       # 不生成独立 EXT4 RootFS
 CONFIG_TARGET_ROOTFS_PARTSIZE=400                             # RootFS 分区大小 400MB
-
+CONFIG_TARGET_ROOTFS_PARTSIZE=400
 # ============================================================
 # 基础系统
 # ============================================================
