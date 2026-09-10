@@ -11,6 +11,23 @@ CONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_jdcloud_re-ss-01=y
 CONFIG_HAS_SUBTARGETS=y
 CONFIG_HAS_DEVICES=y
 CONFIG_LINUX_6_18=y
+
+
+CONFIG_PACKAGE_kmod-tcp-bbr=y
+# CONFIG_SIGN_FIRMWARE is not set
+CONFIG_PACKAGE_luci-app-syncdial=n
+CONFIG_PACKAGE_luci-app-daede=y
+CONFIG_PACKAGE_luci-app-ttyd=y
+CONFIG_PACKAGE_luci-app-openclash=n
+CONFIG_PACKAGE_luci-app-homeproxy=n
+CONFIG_PACKAGE_luci-app-passwall=y
+CONFIG_PACKAGE_luci-app-cpufreq=y
+# CONFIG_PACKAGE_luci-app-aurora-config is not set
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray is not set
+# CONFIG_PACKAGE_luci-theme-aurora is not set
+CONFIG_PACKAGE_luci-app-smartdns=y
+
+
 CONFIG_DEFAULT_ath11k-firmware-ipq6018-ddwrt=y
 CONFIG_MODULE_DEFAULT_ath11k-firmware-ipq6018-ddwrt=y
 CONFIG_MODULE_DEFAULT_ath11k-firmware-qcn9074-ddwrt=y
