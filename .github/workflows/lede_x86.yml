@@ -8,8 +8,8 @@ on:
 env:
   OPENWRT_NAME: lede
   REPO: moruiris/Actions-OpenWrt
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/VIKINGYFY/immortalwrt
+  REPO_BRANCH: main
   CONFIG_FILE: lede/x86/.config
   CONFIG_BUILD: lede/x86/config.buildinfo
   DIY_P1_SH: lede/diy-part1.sh
