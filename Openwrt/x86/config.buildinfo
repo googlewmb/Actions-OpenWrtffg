@@ -280,7 +280,8 @@ CONFIG_PACKAGE_kmod-of-mdio=y                                 # Device Tree MDIO
 CONFIG_PACKAGE_kmod-phy-realtek=y                             # Realtek PHY 驱动
 CONFIG_PACKAGE_kmod-fixed-phy=y                               # Fixed PHY 支持
 CONFIG_PACKAGE_kmod-r8125=y                                   # RTL8125 2.5G 网卡驱动
-
+CONFIG_PACKAGE_kmod-r8125=y
+CONFIG_PACKAGE_kmod-r8125-rss=y
 # 不需要的 Realtek 有线网卡驱动
 # CONFIG_PACKAGE_kmod-r8126 is not set                         # 禁用 RTL8126
 # CONFIG_PACKAGE_kmod-r8168 is not set                         # 禁用 RTL8168
