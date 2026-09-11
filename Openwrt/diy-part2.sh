@@ -34,13 +34,28 @@ git clone -b master --depth 1 https://github.com/vernesong/OpenClash.git
 popd
 
 
+mkdir -p files/etc/uci-defaults
 
-# ==========================================
-# H68K + MT7921
-# 默认开启所有 Wi-Fi
-#
-# 作用：
-# 1. 首次刷机启动时自动开启 Wi-Fi
-# 2. 恢复出厂后再次初始化时自动开启 Wi-Fi
-# 3. 不干扰用户后续在 LuCI 中手动关闭
-# ==========================================
+cat > files/etc/uci-defaults/zz-enable-wifi <<'EOF'
+#!/bin/sh
+. /lib/functions.sh
+
+# 无线配置不存在则自动生成
+[ -s /etc/config/wireless ] || wifi config
+
+# 开启所有 Wi-Fi
+if [ -s /etc/config/wireless ]; then
+	config_load wireless
+	enable_wifi() {
+		local cfg="$1"
+		uci -q set "wireless.${cfg}.disabled=0"
+	}
+	config_foreach enable_wifi wifi-device
+	config_foreach enable_wifi wifi-iface
+	uci -q commit wireless
+fi
+
+exit 0
+EOF
+
+chmod +x files/etc/uci-defaults/zz-enable-wifi
