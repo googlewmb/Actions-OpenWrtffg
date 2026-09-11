@@ -64,6 +64,45 @@ jobs:
       run: |
         git clone ${{ env.REPO_URL }} -b ${{ env.REPO_BRANCH }} openwrt
 
+    - name: 获取源码版本
+      working-directory: ./openwrt
+      run: |
+        echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
+
+    - name: 检查缓存
+      id: check-cache
+      uses: actions/cache@main
+      with:
+        key: rockchip-${{env.REPO_BRANCH}}-${{env.WRT_HASH}}
+        restore-keys: rockchip-${{env.REPO_BRANCH}}
+        path: |
+          ./openwrt/.ccache
+          ./openwrt/staging_dir/host*
+          ./openwrt/staging_dir/tool*
+
+    - name: 更新缓存
+      run: |
+        if [ -d "./openwrt/staging_dir" ]; then
+          find "./openwrt/staging_dir" -type d -name "stamp" -not -path "*target*" | while read -r DIR; do
+            find "$DIR" -type f -exec touch {} +
+          done
+
+          mkdir -p ./openwrt/tmp && echo "1" > ./openwrt/tmp/.build
+
+          echo "toolchain skiped done!"
+        else
+          echo "caches missed!"
+        fi
+
+        if ${{steps.check-cache.outputs.cache-hit != 'true'}}; then
+          CACHE_LIST=$(gh cache list --key "rockchip-$REPO_BRANCH" | cut -f 1)
+          for CACHE_KEY in $CACHE_LIST; do
+            gh cache delete $CACHE_KEY
+          done
+
+          echo "caches cleanup done!"
+        fi
+
     - name: 执行DIY_P1_SH
       run: |
         chmod +x ${{ env.DIY_P1_SH }}
@@ -81,6 +120,8 @@ jobs:
         [ -e ${{ env.CONFIG_BUILD}} ] && mv ${{ env.CONFIG_BUILD}} openwrt/.config
         chmod +x ${{ env.DIY_P2_SH }}
         cd openwrt
+        echo 'CONFIG_DEVEL=y' >> .config
+        echo 'CONFIG_CCACHE=y' >> .config
         $GITHUB_WORKSPACE/${{ env.DIY_P2_SH }}
         make defconfig
 
@@ -114,9 +155,9 @@ jobs:
     - name: 整理文件到firmware目录
       id: organize
       if: steps.compile.outcome == 'success'
-      run: | 
+      run: |
         mkdir firmware
-        cp -v ./openwrt/.config  ./firmware/${{ env.date1 }}_${{ env.OPENWRT_NAME }}_${{ env.DEVICE_NAME }}.config
+        cp -v ./openwrt/.config ./firmware/${{ env.date1 }}_${{ env.OPENWRT_NAME }}_${{ env.DEVICE_NAME }}.config
         find openwrt/bin/targets/*/*/ -maxdepth 1 \
         -name "config.buildinfo" \
         -or -name "*squashfs-combined*" \
@@ -152,13 +193,15 @@ jobs:
         body_path: release.txt
 
     - name: config文件上传自动更新1
-      run : |
+      run: |
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
+
     - name: config文件上传自动更新2
       run: |
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{ env.REPO }}.git main
+
     - name: config文件上传自动更新3
       run: |
         cp ./openwrt/.config $GITHUB_WORKSPACE/main/${{ env.CONFIG_FILE }}
