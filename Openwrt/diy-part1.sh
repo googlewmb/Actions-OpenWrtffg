@@ -2,7 +2,12 @@
 #
 # DIY1
 # H68K + ImmortalWrt/OpenWrt
-#
+
+
+# 设置 conntrack 最大连接数为 655550
+sed -i '/^[[:space:]]*net\.netfilter\.nf_conntrack_max[[:space:]]*=/d' package/base-files/files/etc/sysctl.conf
+echo 'net.netfilter.nf_conntrack_max=655550' >> package/base-files/files/etc/sysctl.conf
+
 
 # ============================================================
 # 添加 kenzok8 软件源
