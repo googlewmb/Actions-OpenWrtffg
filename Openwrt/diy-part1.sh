@@ -8,14 +8,11 @@
 sed -i '/^[[:space:]]*net\.netfilter\.nf_conntrack_max[[:space:]]*=/d' package/base-files/files/etc/sysctl.conf
 echo 'net.netfilter.nf_conntrack_max=655550' >> package/base-files/files/etc/sysctl.conf
 
-# 添加 kenzok8 软件源
-#sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-#sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
+# 添加软件源
+sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
 #sed -i '3i src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
-
-# 添加 PassWall 软件源
-sed -i '1i src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' feeds.conf.default
-sed -i '2i src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main' feeds.conf.default
+#sed -i '4i src-git op https://github.com/kiddin9/op-packages' feeds.conf.default
 
 # 删除官方冲突包
 rm -rf feeds/luci/applications/luci-app-passwall
@@ -57,23 +54,12 @@ git clone --depth 1 -b 1.26 \
 https://github.com/kenzok8/golang \
 feeds/packages/lang/golang
 
-# 三方插件
-mkdir -p package/small
-pushd package/small
+# PassWall 依赖
+rm -rf package/passwall-packages
 
-git clone -b master --depth 1 \
-https://github.com/pymumu/luci-app-smartdns.git
-
-git clone -b master --depth 1 \
-https://github.com/pymumu/smartdns.git smartdns-src
-cp -a smartdns-src/package/openwrt ./smartdns
-rm -rf smartdns-src
-
-# Daed
-git clone -b master --depth 1 \
-https://github.com/QiuSimons/luci-app-daed.git
-
-popd
+git clone --depth 1 \
+https://github.com/Openwrt-Passwall/openwrt-passwall-packages \
+package/passwall-packages
 
 # 更新 feeds
 ./scripts/feeds update -a
