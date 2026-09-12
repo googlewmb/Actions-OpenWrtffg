@@ -65,7 +65,9 @@ git clone -b master --depth 1 \
 https://github.com/pymumu/luci-app-smartdns.git
 
 git clone -b master --depth 1 \
-https://github.com/pymumu/smartdns.git
+https://github.com/pymumu/smartdns.git smartdns-src
+cp -a smartdns-src/package/openwrt ./smartdns
+rm -rf smartdns-src
 
 # Daed
 git clone -b master --depth 1 \
