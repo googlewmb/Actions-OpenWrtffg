@@ -10,8 +10,8 @@ on:
 env:
   OPENWRT_NAME: Openwrt
   REPO: moruiris/Actions-OpenWrt
-  REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: main
+  REPO_URL: https://github.com/istoreos/istoreos
+  REPO_BRANCH: istoreos-24.10
   CONFIG_FILE: Openwrt/x86/.config
   CONFIG_BUILD: Openwrt/x86/config.buildinfo
   DIY_P1_SH: Openwrt/diy-part1.sh
