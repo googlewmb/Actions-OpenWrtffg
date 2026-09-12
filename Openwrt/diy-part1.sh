@@ -2,26 +2,22 @@
 #
 # DIY1
 # H68K + ImmortalWrt/OpenWrt
-
+#
 
 # 设置 conntrack 最大连接数为 655550
 sed -i '/^[[:space:]]*net\.netfilter\.nf_conntrack_max[[:space:]]*=/d' package/base-files/files/etc/sysctl.conf
 echo 'net.netfilter.nf_conntrack_max=655550' >> package/base-files/files/etc/sysctl.conf
 
-
-# ============================================================
 # 添加 kenzok8 软件源
-# ============================================================
+#sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+#sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
+#sed -i '3i src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
 
-sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
-sed -i '3i src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
+# 添加 PassWall 软件源
+sed -i '1i src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' feeds.conf.default
+sed -i '2i src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main' feeds.conf.default
 
-
-# ============================================================
 # 删除官方冲突包
-# ============================================================
-
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 rm -rf feeds/luci/applications/luci-app-openclash
@@ -54,41 +50,34 @@ rm -rf feeds/packages/net/smartdns
 
 rm -rf feeds/packages/utils/v2dat
 
-
-# ============================================================
 # Golang
-# ============================================================
-
 rm -rf feeds/packages/lang/golang
 
 git clone --depth 1 -b 1.26 \
 https://github.com/kenzok8/golang \
 feeds/packages/lang/golang
 
+# 三方插件
+mkdir -p package/small
+pushd package/small
 
-# ============================================================
-# PassWall 依赖
-# ============================================================
+git clone -b master --depth 1 \
+https://github.com/pymumu/luci-app-smartdns.git
 
-rm -rf package/passwall-packages
+git clone -b master --depth 1 \
+https://github.com/pymumu/smartdns.git
 
-git clone --depth 1 \
-https://github.com/Openwrt-Passwall/openwrt-passwall-packages \
-package/passwall-packages
+# Daed
+git clone -b master --depth 1 \
+https://github.com/QiuSimons/luci-app-daed.git
 
+popd
 
-# ============================================================
 # 更新 feeds
-# ============================================================
-
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-
-# ============================================================
 # 自动添加 LuCI 中文语言包
-# ============================================================
-
 for pkg in $(grep '^CONFIG_PACKAGE_luci-app-.*=y' .config | sed 's/^CONFIG_PACKAGE_//;s/=y//'); do
     trans="luci-i18n-${pkg#luci-app-}"
 
@@ -102,9 +91,5 @@ for pkg in $(grep '^CONFIG_PACKAGE_luci-app-.*=y' .config | sed 's/^CONFIG_PACKA
     fi
 done
 
-
-# ============================================================
 # 修正配置
-# ============================================================
-
 make defconfig
