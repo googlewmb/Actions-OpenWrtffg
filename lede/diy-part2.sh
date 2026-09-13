@@ -3,11 +3,6 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-#!/bin/bash
-#
-# Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
-
 # kenzok8 small-package
 #sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
 
@@ -37,3 +32,30 @@ git clone -b master --depth 1 https://github.com/vernesong/OpenClash.git
 #git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-momo.git
 
 popd
+
+
+mkdir -p files/etc/uci-defaults
+
+cat > files/etc/uci-defaults/zz-enable-wifi <<'EOF'
+#!/bin/sh
+. /lib/functions.sh
+
+# 无线配置不存在则自动生成
+[ -s /etc/config/wireless ] || wifi config
+
+# 开启所有 Wi-Fi
+if [ -s /etc/config/wireless ]; then
+	config_load wireless
+	enable_wifi() {
+		local cfg="$1"
+		uci -q set "wireless.${cfg}.disabled=0"
+	}
+	config_foreach enable_wifi wifi-device
+	config_foreach enable_wifi wifi-iface
+	uci -q commit wireless
+fi
+
+exit 0
+EOF
+
+chmod +x files/etc/uci-defaults/zz-enable-wifi
