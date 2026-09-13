@@ -8,8 +8,8 @@ on:
 env:
   OPENWRT_NAME: immortalwrt
   REPO: moruiris/Actions-OpenWrt
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/istoreos/istoreos
+  REPO_BRANCH: istoreos-24.10
   CONFIG_FILE: immortalwrt/x86/.config
   CONFIG_BUILD: immortalwrt/x86/config.buildinfo
   DIY_P1_SH: immortalwrt/diy-part1.sh
