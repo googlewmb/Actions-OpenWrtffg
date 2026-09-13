@@ -25,7 +25,7 @@ git clone -b master --depth 1 https://github.com/immortalwrt/homeproxy.git
 
 #git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall.git ../passwall-luci
 #git clone -b main --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall2.git
-git clone -b v5 --depth 1 https://github.com/sbwml/luci-app-mosdns.git
+#git clone -b v5 --depth 1 https://github.com/sbwml/luci-app-mosdns.git
 
 git clone -b master --depth 1 https://github.com/vernesong/OpenClash.git
 #git clone -b main --depth 1 https://github.com/nikkinikki-org/OpenWrt-nikki.git
