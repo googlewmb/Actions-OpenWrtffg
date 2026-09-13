@@ -38,7 +38,7 @@ rm -rf feeds/packages/net/simple-obfs
 rm -rf feeds/packages/net/tcping
 rm -rf feeds/packages/net/v2ray-plugin
 rm -rf feeds/packages/net/xray-plugin
-rm -rf feeds/packages/net/geoview
+#rm -rf feeds/packages/net/geoview
 rm -rf feeds/packages/net/shadow-tls
 rm -rf feeds/packages/net/alist
 rm -rf feeds/packages/net/adguardhome
