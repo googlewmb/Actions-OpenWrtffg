@@ -15,7 +15,7 @@ sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
 #sed -i '4i src-git op https://github.com/kiddin9/op-packages' feeds.conf.default
 
 # 删除官方冲突包
-rm -rf feeds/luci/applications/luci-app-passwall
+#rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf feeds/luci/applications/luci-app-homeproxy
@@ -42,7 +42,7 @@ rm -rf feeds/packages/net/xray-plugin
 rm -rf feeds/packages/net/shadow-tls
 rm -rf feeds/packages/net/alist
 rm -rf feeds/packages/net/adguardhome
-rm -rf feeds/packages/net/mosdns
+#rm -rf feeds/packages/net/mosdns
 rm -rf feeds/packages/net/smartdns
 
 rm -rf feeds/packages/utils/v2dat
